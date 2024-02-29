@@ -9,8 +9,8 @@ class Manufacturer:
 
     def __init__(self, name, industry, id = None):
         self.id = id
-        self._name = name
-        self._industry = industry
+        self.name = name
+        self.industry = industry
 
     @property
     def name(self):
@@ -58,9 +58,6 @@ class Manufacturer:
         '''
         CURSOR.execute(sql)
         CONN.commit()
-
-    def __repr__(self):
-        return f"<Manufacturer {self.id}: {self.name}, {self.industry}>"
     
     def save(self):
         '''insert a new row with the name and location vaues of the current Manufacturer instance. 
@@ -147,6 +144,13 @@ class Manufacturer:
 
         row = CURSOR.execute(sql, (id,)).fetchone()
         return cls.instance_from_db(row) if row else None
+    
+    def products(self):
+        '''return list of products associated with current manufacturer'''
+        pass
+
+    def __repr__(self):
+        return f"<Manufacturer {self.id}: {self.name}, {self.industry}>"
 
 
 

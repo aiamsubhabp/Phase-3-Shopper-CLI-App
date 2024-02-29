@@ -6,12 +6,13 @@ from models.manufacturer import Manufacturer
 
 import ipdb
 
-Manufacturer.drop_table()
-Manufacturer.create_table()
+def reset_database():
+    Manufacturer.drop_table()
+    Manufacturer.create_table()
 
-apple = Manufacturer.create('Apple', 'Tech')
-print(apple)
-apple.delete()
-print(apple)
+    apple = Manufacturer.create('Apple', 'tech')
+    toyota = Manufacturer.create('Toyota', 'cars')
+    sony = Manufacturer.create('Sony', 'electronics')
 
+reset_database()
 ipdb.set_trace()
