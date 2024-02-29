@@ -49,11 +49,32 @@ class Manufacturer:
         '''
         CURSOR.execute(sql)
         CONN.commit()
-        
 
+    @classmethod
+    def drop_table(cls):
+        '''drop the table that persists the Manufacturer instances'''
+        sql = '''
+            DROP TABLE IF EXISTS manufacturers;
+        '''
+        CURSOR.execute(sql)
+        CONN.commit()
 
     def __repr__(self):
         return f"<Manufacturer {self.id}: {self.name}, {self.industry}>"
+    
+    def save(self):
+        '''insert a new row with the name and location vaues of the current Manufacturer instance. 
+        update object id attribute using the primary key value of new row.
+        save the object in local dictionary using table row's primary key as dictionary key'''
+        sql = '''
+            INSERT INTO manufacturers (name, industry)
+            VALUES (?, ?)
+        '''
+        CURSOR.execute(sql, (self.name, self.industry))
+        CONN.commit()
+
+        self.id = CURSOR.lastrowid
+        type(self).all[self.id] = self
     
 apple = Manufacturer('Apple', 'Tech')
 print(apple)

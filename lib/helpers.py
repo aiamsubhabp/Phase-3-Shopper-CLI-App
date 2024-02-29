@@ -1,4 +1,5 @@
 # lib/helpers.py
+import click
 
 def helper_1():
     print("Performing useful function#1.")
