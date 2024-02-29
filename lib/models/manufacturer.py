@@ -104,9 +104,40 @@ class Manufacturer:
 
         # Delete the dictionary entry using id as the key
         del type(self).all[self.id]
-        
+
         # Set the id to None
         self.id = None
+
+    @classmethod
+    def instance_from_db(cls, row):
+        '''return a Manufacturer object having the attribute values from the table row.'''
+        
+        # check the dictionary for an existing instance using the row's primary key
+        manufacturer = cls.all.get(row[0])
+        if manufacturer:
+            # ensure the attributes match row values in case local instance was modified
+            manufacturer.name = row[1]
+            manufacturer.industry = row[2]
+        else:
+            # not in ductionary, create new instance and add to dictionary
+            manufacturer = cls(row[1], row[2])
+            manufacturer.id = row[0]
+            cls.all[manufacturer.id] = manufacturer
+        return manufacturer
+    
+    @classmethod
+    def get_all(cls):
+        '''return a list containing a Manufacturer object per row in the table'''
+        sql = '''
+            SELECT *
+            FROM manufacturers
+        '''
+
+        rows = CURSOR.execute(sql).fetchall()
+        return [cls.instance_from_db(row) for row in rows]
+    
+    
+
 
     
 
