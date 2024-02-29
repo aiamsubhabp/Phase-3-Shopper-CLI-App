@@ -82,9 +82,32 @@ class Manufacturer:
         manufacturer = cls(name, industry)
         manufacturer.save()
         return manufacturer
+    
+    def update(self):
+        '''update the table row corresponding to the current Manufacturer instance'''
+        sql = '''
+            UPDATE manufacturers
+            SET name = ?, industry = ?
+            WHERE id = ?
+        '''
+        CURSOR.execute(sql, (self.name, self.industry, self.id))
+        CONN.commit()
+    
+    def delete(self):
+        '''delete the table row corresponding to the current Manufacturer instance, 
+        delete the dictionary entry, and reassign id attribute'''
+        sql = '''
+            DELETE FROM manufacturers
+            WHERE id = ?
+        '''
+        CURSOR.execute(sql, (self.id,))
+
+        # Delete the dictionary entry using id as the key
+        del type(self).all[self.id]
+        
+        # Set the id to None
+        self.id = None
 
     
-apple = Manufacturer('Apple', 'Tech')
-print(apple)
-        
+
     
