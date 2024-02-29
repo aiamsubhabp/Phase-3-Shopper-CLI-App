@@ -136,7 +136,18 @@ class Manufacturer:
         rows = CURSOR.execute(sql).fetchall()
         return [cls.instance_from_db(row) for row in rows]
     
-    
+    @classmethod
+    def find_by_id(cls, id):
+        '''return a Manufacturer object corresponding to the table row matching the specified primary key'''
+        sql = '''
+            SELECT *
+            FROM manufacturers
+            WHERE id = ?
+        '''
+
+        row = CURSOR.execute(sql, (id,)).fetchone()
+        return cls.instance_from_db(row) if row else None
+
 
 
     
