@@ -1,3 +1,6 @@
+# lib/models/manufacturer.py
+
+# WHY not from models.__init__ ?
 from models.__init__ import CURSOR, CONN
 
 class Manufacturer:
@@ -8,9 +11,6 @@ class Manufacturer:
         self.id = id
         self._name = name
         self._industry = industry
-        
-    def __repr__(self):
-        pass
 
     @property
     def name(self):
@@ -37,3 +37,25 @@ class Manufacturer:
             raise ValueError(
                 'Industry must be a non-empty string'
             )
+        
+    @classmethod
+    def create_table(cls):
+        '''create a new table to persist the attributes of Manufacturer instances'''
+        sql = '''
+            CREATE TABLE IF NOT EXISTS manufacturers (
+            id INTEGER PRIMARY KEY,
+            name TEXT,
+            industry TEXT)
+        '''
+        CURSOR.execute(sql)
+        CONN.commit()
+        
+
+
+    def __repr__(self):
+        return f"<Manufacturer {self.id}: {self.name}, {self.industry}>"
+    
+apple = Manufacturer('Apple', 'Tech')
+print(apple)
+        
+    
