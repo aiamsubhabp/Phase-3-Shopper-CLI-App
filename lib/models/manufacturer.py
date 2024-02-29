@@ -75,6 +75,14 @@ class Manufacturer:
 
         self.id = CURSOR.lastrowid
         type(self).all[self.id] = self
+
+    @classmethod
+    def create(cls, name, industry):
+        '''initialize a new Manufacturer instance and save the object to the database'''
+        manufacturer = cls(name, industry)
+        manufacturer.save()
+        return manufacturer
+
     
 apple = Manufacturer('Apple', 'Tech')
 print(apple)
