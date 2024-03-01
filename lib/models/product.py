@@ -55,5 +55,30 @@ class Product:
             raise ValueError(
                 'manufacturer id must reference a manufacturer in the database'
             )
+        
+    @classmethod
+    def create_table(cls):
+        '''create a mew table to persist the attributes of Product instances'''
+        sql = '''
+            CREATE TABLE IF NOT EXISTS products (
+            id INTEGER PRIMARY KEY,
+            name TEXT,
+            product_type TEXT,
+            manufacturer_id INTEGER,
+            FOREIGN KEY (manufacturer_id) REFERENCES manufacturer(id))
+        '''
+        CURSOR.execute(sql)
+        CONN.commit()
+
+    @classmethod
+    def drop_table(cls):
+        '''drop the table that persists Product instances'''
+        sql = '''
+            DROP TABLE IF EXISTS products;
+        '''
+        CURSOR.execute(sql)
+        CONN.commit()
+
+        
 
 
