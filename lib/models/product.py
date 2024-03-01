@@ -58,7 +58,7 @@ class Product:
         
     @classmethod
     def create_table(cls):
-        '''create a mew table to persist the attributes of Product instances'''
+        '''create a new table to persist the attributes of Product instances'''
         sql = '''
             CREATE TABLE IF NOT EXISTS products (
             id INTEGER PRIMARY KEY,
@@ -79,6 +79,44 @@ class Product:
         CURSOR.execute(sql)
         CONN.commit()
 
-        
+    def save(self):
+        '''insert a new row with the name, product title, and manufacturer id values of the current Product object.
+        update object id attribute using the primary key value of new row.
+        save the object in local dictionary using table row's primary key as dictionary key.'''
+        sql = '''
+            INSERT INTO products (name, product_type, manufacturer_id)
+            VALUES (?, ?, ?)
+        '''
+        CURSOR.execute(sql, (self.name, self.product_type, self.manufacturer_id))
+        CONN.commit()
+
+        self.id = CURSOR.lastrowid
+        type(self).all[self.id] = self
+    
+    def update(self):
+        '''updat the table row corresponding to teh current Product instance.'''
+        sql = '''
+            UPDATE products
+            SET name = ?, product_type = ?, manufacturer_id = ?
+            WHERE id = ?
+        '''
+        CURSOR.execute(sql, (self.name, self.product_type, self.manufacturer_id, self.id))
+        CONN.commit()
+
+    def delete(self):
+        '''delete the table row corresponding to the current Product instance, 
+        delete the dictionary entry, and reassign id attribute'''
+        sql = '''
+            DELETE FROM products
+            WHERE id = ?
+        '''
+        CURSOR.execute(sql, (self.id,))
+        CONN.commit()
+
+        del type(self).all[self.id]
+        self.id = None
+
+
+
 
 
