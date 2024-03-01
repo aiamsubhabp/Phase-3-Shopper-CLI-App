@@ -145,9 +145,30 @@ class Manufacturer:
         row = CURSOR.execute(sql, (id,)).fetchone()
         return cls.instance_from_db(row) if row else None
     
+    @classmethod
+    def find_by_name(cls, name):
+        '''return a Manufacturer object corresponding to the first table row matching specified name'''
+        sql = '''
+            SELECT *
+            FROM manufacturers
+            WHERE name is ?
+        '''
+        row = CURSOR.execute(sql, (name,)).fetchone()
+        return cls.instance_from_db(row) if row else None
+    
     def products(self):
         '''return list of products associated with current manufacturer'''
-        pass
+        from models.product import Product
+        sql = '''
+            SELECT *
+            FROM products
+            WHERE manufacturer_id = ?
+        '''
+        CURSOR.execute(sql, (self.id),)
+        rows = CURSOR.fetchall()
+        return [
+            Product.instance_from_db(row) for row in rows
+        ]
 
     def __repr__(self):
         return f"<Manufacturer {self.id}: {self.name}, {self.industry}>"
