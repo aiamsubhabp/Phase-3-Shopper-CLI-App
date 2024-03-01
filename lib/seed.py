@@ -25,8 +25,9 @@ def seed_database():
     raptor = Product.create('Ford Raptor', 'Automobile', ford.id)
     ps5 = Product.create('Playstation 5', 'Videogames', sony.id)
     wh1000xm5 = Product.create('WH-1000XM5', 'Headphones', sony.id)
-    galaxy_s = Product.create('Samsung Galaxy S', 'Phone', samsung.id)
-    iphone = Product
+    galaxy_s = Product.create('Samsung Galaxy S', 'Cell Phone', samsung.id)
+    iphone_15_pro = Product.create('iPhone 15 Pro', 'Cell Phone', apple.id)
+    pixel_8 = Product.create('Google Pixel 8', 'Cell Phone', google.id)
 
 seed_database()
 print('Seeded database')
