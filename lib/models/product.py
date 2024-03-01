@@ -116,6 +116,29 @@ class Product:
         del type(self).all[self.id]
         self.id = None
 
+    @classmethod
+    def create(cls, name, product_type, manufacturer_id):
+        '''initialize a new Product instance and save the object to the database'''
+        product = cls(name, product_type, manufacturer_id)
+        product.save()
+        return product
+    
+    @classmethod
+    def instance_from_db(cls, row):
+        '''return a Product object having the attribute values from the table row'''
+        product = cls.all.get(row[0])
+        if product:
+            product.name = row[1]
+            product.product_type = row[2]
+            product.manufacturer_id = row[3]
+        else:
+            product = cls(row[1], row[2], row[3])
+            product.id = row[0]
+            cls.all[product.id] = product
+        return product
+    
+    @classmethod
+
 
 
 
