@@ -138,6 +138,37 @@ class Product:
         return product
     
     @classmethod
+    def get_all(cls):
+        '''return a list containing one Product object per table row'''
+        sql = '''
+            SELECT *
+            FROM products
+        '''
+        row = CURSOR.execute(sql).fetchall()
+
+        return [cls.instance_from_db(row) for row in rows]
+    
+    @classmethod
+    def find_by_id(cls, id):
+        '''return product object corresponding to the table row matching the specified primary key'''
+        sql = '''
+            SELECT *
+            FROM products
+            WHERE id = ?
+        '''
+        row = CURSOR.execute(sql, (id,)).fetchone()
+        return cls.instance_from_db(row) if row else None
+    
+    @classmethod
+    def find_by_name(cls, name):
+        '''return Product object corresponding to first table row matching specified name'''
+        sql = '''
+            SELECT *
+            FROM products
+            WHERE name is ?
+        '''
+        row = CURSOR.execute(sql, (name,)).fetchone()
+        return cls.instance_from_db(row) if row else None
 
 
 
