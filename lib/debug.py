@@ -13,9 +13,12 @@ def reset_database():
     Manufacturer.create_table()
     Product.create_table()
 
-    # apple = Manufacturer.create('Apple', 'tech')
-    # toyota = Manufacturer.create('Toyota', 'cars')
-    # sony = Manufacturer.create('Sony', 'electronics')
+    apple = Manufacturer.create('Apple', 'tech')
+    toyota = Manufacturer.create('Toyota', 'cars')
+    sony = Manufacturer.create('Sony', 'electronics')
+
+    iphone = Product.create('iPhone', 'phone', apple.id)
+    tacoma = Product.create('Tacoma', 'truck', toyota.id)
 
 
 reset_database()
