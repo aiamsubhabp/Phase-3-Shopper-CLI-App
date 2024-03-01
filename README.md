@@ -6,3 +6,6 @@
 
 ## Manufacturer Model
 ## Product Model
+
+## Roadmap
+- add MSRPs to each product so that shoppers can compare prices
