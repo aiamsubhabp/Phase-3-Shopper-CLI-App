@@ -21,6 +21,7 @@ from helpers import (
 
 def greeting():
     print(Figlet(font='chunky').renderText('Shoppers'))
+    print('Please use number keys to navigate through menu.\n')
 
 def main():
     while True:
@@ -59,7 +60,7 @@ def main():
 
 
 def menu():
-    print("Please select an option:")
+    print("\nPlease select an option:\n")
     print("0. Exit the program")
     print("1. List all manufacturers")
     print("2. Find manufacturer by name")

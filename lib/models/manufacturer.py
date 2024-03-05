@@ -60,7 +60,7 @@ class Manufacturer:
         CONN.commit()
     
     def save(self):
-        '''insert a new row with the name and location vaues of the current Manufacturer instance. 
+        '''insert a new row with the name and industry values of the current Manufacturer instance. 
         update object id attribute using the primary key value of new row.
         save the object in local dictionary using table row's primary key as dictionary key'''
         sql = '''
@@ -164,7 +164,7 @@ class Manufacturer:
             FROM products
             WHERE manufacturer_id = ?
         '''
-        CURSOR.execute(sql, (self.id),)
+        CURSOR.execute(sql, (self.id,),)
         rows = CURSOR.fetchall()
         return [
             Product.instance_from_db(row) for row in rows

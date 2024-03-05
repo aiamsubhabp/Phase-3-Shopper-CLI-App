@@ -78,10 +78,13 @@ def create_product():
     product_type = input("Enter the product type: ")
     mfg_id = input("Enter the product's manufacturer id: ")
     try:
-        product = Product.create(name, product_type, mfg_id)
-        print(f'Success: {product}')
+        if mfg_id := Manufacturer.find_by_id(mfg_id).id:
+            product = Product.create(name, product_type, mfg_id)
+            print(f'Success: {product}')
+        else:
+            print(f'Manufacturer id not found')
     except Exception as exc:
-        print("Error creating product", exc)
+        print("Error creating product: ", exc)
 
 def update_product():
     product_id = input("Enter the product id: ")
@@ -92,10 +95,10 @@ def update_product():
             product_type = input("Enter the product's updated type(if unchanged, enter the previous product type)")
             product.product_type = product_type
             mfg_id = input("Enter the product's new manufacturer id (if unchanged, enter the previous manufacturer id)")
-            product.manufacturer_id = mfg_id
-
-            product.update()
-            print(f'Success: {product}')
+            if mfg_id := Manufacturer.find_by_id(mfg_id).id:
+                product.manufacturer_id = mfg_id
+                product.update()
+                print(f'Success: {product}')
         except Exception as exc:
             print("Error upating product: ", exc)
     else:

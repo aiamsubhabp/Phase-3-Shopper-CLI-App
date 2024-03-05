@@ -144,7 +144,7 @@ class Product:
             SELECT *
             FROM products
         '''
-        row = CURSOR.execute(sql).fetchall()
+        rows = CURSOR.execute(sql).fetchall()
 
         return [cls.instance_from_db(row) for row in rows]
     
