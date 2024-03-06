@@ -1,7 +1,6 @@
 # lib/cli.py
 from pyfiglet import Figlet
 
-
 from helpers import (
     exit_program,
     list_manufacturers,
@@ -128,28 +127,6 @@ def product_menu():
             main()
         elif choice == 'E' or choice == 'e':
             exit_program()
-        
-
-
-
-
-
-    # print("1. List all manufacturers")
-    # print("2. Find manufacturer by name")
-    # print("3. Find manufacturer by id")
-    # print("4. Create new manufacturer")
-    # print("5. Update existing manufacturer")
-    # print("6. Delete manufacturer")
-    # print("7. List all products")
-    # print("8. Find product by name")
-    # print("9. Find product by id")
-    # print('10. Create new product')
-    # print('11. Update existing product')
-    # print('12. Delete product')
-    # print('13. List all products by specified manufacturer')
-
-
-
 
 if __name__ == "__main__":
     greeting()
