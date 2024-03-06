@@ -12,19 +12,21 @@ def exit_program():
 
 def list_manufacturers():
     manufacturers = Manufacturer.get_all()
-    for i, manufacturer in enumerate(manufacturers, start=1):
-        print(i, '|', manufacturer.name)
+    for manufacturer in manufacturers:
+        print(manufacturer.id, '|', manufacturer.name)
 
 
 def find_manufacturer_by_name():
     name = input("Enter the manufacturer's name: ")
     manufacturer = Manufacturer.find_by_name(name)
     print(manufacturer) if manufacturer else print(f'{manufacturer} not found')
+    
 
 def find_manufacturer_by_id():
     mfg_id = input("Enter the id corresponding to the manufacturer: ")
     manufacturer = Manufacturer.find_by_id(mfg_id)
     print(manufacturer.name, '|', manufacturer.industry) if manufacturer else print(f'Manufacturer {mfg_id} not found')
+    print("Please enter a valid manufacturer id")
 
 def create_manufacturer():
     name = input("Enter the manufacturer's name: ")
@@ -32,8 +34,8 @@ def create_manufacturer():
     try:
         manufacturer = Manufacturer.create(name, industry)
         print(f'Success: {manufacturer.name} was created!')
-    except Exception as exc:
-        print('Error creating manufacturer: ', exc)
+    except Exception:
+        print('Error creating manufacturer')
 
 def update_manufacturer():
     mfg_id = input("Enter the manufacturer's id: ")
@@ -46,10 +48,11 @@ def update_manufacturer():
 
             manufacturer.update()
             print(f'Success {manufacturer.name} was updated!')
-        except Exception as exc:
-            print("Error updating manufacturer: ", exc)
+        except Exception:
+            print("Error updating manufacturer")
     else:
-        print(f'Manufacturer {mfg_id} not found')
+        print(f'Manufacturer id {mfg_id} not found')
+        print('Please enter a valid manufacturer id')
 
 def delete_manfacturer():
     mfg_id = input("Enter the manufacturer's id that you want to delete: ")
@@ -57,12 +60,13 @@ def delete_manfacturer():
         manufacturer.delete()
         print(f'Manufacturer {manufacturer.name} deleted')
     else:
-        print(f'Manufacturer {manufacturer.name} not found')
+        print(f'Manufacturer id {mfg_id} not found')
+        print("Please enter a valid manufacturer id")
 
 def list_products():
     products = Product.get_all()
     for product in products:
-        print(product)
+        print(product.id, '|', product.name)
 
 def find_product_by_name():
     name = input("Enter the product's name: ")
@@ -72,8 +76,8 @@ def find_product_by_name():
 def find_product_by_id():
     product_id = input("Enter the product id: ")
     product = Product.find_by_id(product_id)
-    print(product) if product else print(f'Product {product_id} not found')
-
+    print('Name:', product.name, '| Type:', product.product_type) if product else print(f'Product id {product_id} not found\nPlease enter a valid product id')
+    
 def create_product():
     name = input("Enter the products name: ")
     product_type = input("Enter the product type: ")
@@ -81,11 +85,11 @@ def create_product():
     try:
         if mfg_id := Manufacturer.find_by_id(mfg_id).id:
             product = Product.create(name, product_type, mfg_id)
-            print(f'Success: {product}')
+            print(f'Success: {product.name} was created!')
         else:
-            print(f'Manufacturer id not found')
-    except Exception as exc:
-        print("Error creating product: ", exc)
+            print(f'Manufacturer id {mfg_id} not found. Please select an existing manufacturer id')
+    except Exception:
+        print("Error creating product:", name)
 
 def update_product():
     product_id = input("Enter the product id: ")
@@ -93,15 +97,16 @@ def update_product():
         try:
             name = input("Enter the product's new name: ")
             product.name = name
-            product_type = input("Enter the product's updated type(if unchanged, enter the previous product type)")
+            product_type = input("Enter the product's updated type(if unchanged, enter the previous product type): ")
             product.product_type = product_type
-            mfg_id = input("Enter the product's new manufacturer id (if unchanged, enter the previous manufacturer id)")
+            mfg_id = input("Enter the product's new manufacturer id (if unchanged, enter the previous manufacturer id): ")
             if mfg_id := Manufacturer.find_by_id(mfg_id).id:
                 product.manufacturer_id = mfg_id
                 product.update()
-                print(f'Success: {product}')
-        except Exception as exc:
-            print("Error upating product: ", exc)
+                print(f'Success: {product.name} was updated!')
+        except Exception:
+            print("Error upating product")
+            print('Please enter a valid manufacturer id')
     else:
         print(f'Product {product_id} not found')
 
@@ -109,9 +114,9 @@ def delete_product():
     product_id = input("Enter the product id: ")
     if product := Product.find_by_id(product_id):
         product.delete()
-        print(f'Product {product_id} deleted')
+        print(f'{product.name} was deleted')
     else:
-        print(f'Product {product_id} not found')
+        print(f'Product id {product_id} not found')
 
 def list_manufacturer_products():
     mfg_id = input("Enter the manufacturer id: ")

@@ -31,48 +31,19 @@ def main():
         if choice == "E" or choice == 'e':
             exit_program()
         elif choice == "M" or choice == 'm':
-            print('----------------------------------------')
+            print('-----------------------------------------------------------------------')
             print('The manufacturers are listed below:\n')
             list_manufacturers()
             print('')
             manufacturer_menu()
         elif choice == "P" or choice == 'p':
+            print('-----------------------------------------------------------------------')
+            print('The products are listed below:\n')
             list_products()
+            print('')
+            product_menu()
         else:
             print("Invalid choice")
-
-
-
-
-
-
-
-        # elif choice == "2":
-        #     find_manufacturer_by_name()
-        # elif choice == "3":
-        #     find_manufacturer_by_id()
-        # elif choice == "4":
-        #     create_manufacturer()
-        # elif choice == "5":
-        #     update_manufacturer()        
-        # elif choice == "6":
-        #     delete_manfacturer()    
-        # elif choice == "7":
-        #     list_products()
-        # elif choice == "8":
-        #     find_product_by_name()
-        # elif choice == "9":
-        #     find_product_by_id()
-        # elif choice == "10":
-        #     create_product()
-        # elif choice == "11":
-        #     update_product()        
-        # elif choice == "12":
-        #     delete_product() 
-        # elif choice == "13":
-        #     list_manufacturer_products() 
-        # else:
-        #     print("Invalid choice")
 
 def reroute():
     choice = 0
@@ -100,6 +71,7 @@ def manufacturer_menu():
     while choice == 0:
         print('-----------------------------------------------------------------------')
         print('Type I to view more information on any manufacturer')
+        print('Type P to see products associated with a manufacturer')
         print('Type C to create a new manufacturer')
         print('Type D to delete a manufacturer')
         print('Type U to update a manufacturer')
@@ -109,6 +81,9 @@ def manufacturer_menu():
         if choice == "I" or choice == 'i':
             find_manufacturer_by_id()
             reroute()
+        elif choice == 'P' or choice == 'p':
+            list_manufacturer_products()
+            reroute() 
         elif choice == 'C' or choice == 'c':
             create_manufacturer()
             reroute()
@@ -125,9 +100,35 @@ def manufacturer_menu():
             main()
         elif choice == 'E' or choice == 'e':
             exit_program()
-
-
     
+def product_menu():
+    choice = 0
+    while choice == 0:
+        print('-----------------------------------------------------------------------')
+        print('Type I to view more information on any product')
+        print('Type C to create a new product')
+        print('Type D to delete a product')
+        print('Type U to update a product')
+        print('Type B to go back to the main menu')
+        print('Type E to exit')
+        choice = input("> ")
+        if choice == "I" or choice == 'i':
+            find_product_by_id()
+            reroute()
+        elif choice == 'C' or choice == 'c':
+            create_product()
+            reroute()
+        elif choice == 'D' or choice == 'd':
+            delete_product()
+            reroute()
+        elif choice == 'U' or choice == 'u':
+            update_product()
+            reroute()
+        elif choice == 'B' or choice == 'b':
+            main()
+        elif choice == 'E' or choice == 'e':
+            exit_program()
+        
 
 
 
