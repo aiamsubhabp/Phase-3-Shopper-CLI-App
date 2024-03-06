@@ -25,8 +25,8 @@ def find_manufacturer_by_name():
 def find_manufacturer_by_id():
     mfg_id = input("Enter the id corresponding to the manufacturer: ")
     manufacturer = Manufacturer.find_by_id(mfg_id)
-    print(manufacturer.name, '|', manufacturer.industry) if manufacturer else print(f'Manufacturer {mfg_id} not found')
-    print("Please enter a valid manufacturer id")
+    print(manufacturer.name, '|', manufacturer.industry) if manufacturer else print(f'Manufacturer {mfg_id} not found\nPlease enter a valid manufacturer id')
+    
 
 def create_manufacturer():
     name = input("Enter the manufacturer's name: ")
