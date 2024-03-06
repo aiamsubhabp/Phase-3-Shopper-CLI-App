@@ -5,7 +5,7 @@
     - There exists a one to many relationship between the two models; the manufacturer is the one, and the products are the many. In other words one manufacturer can produce many products, but each product can only be associated with one manufacturer. For instance, Apple produces many products such as iPhones, Airpods, etc.; however, iPhones and Airpods can only be produced by Apple. 
 - Through this app, users are able to:
     - list all manufacturers and products
-    - find manufacturers/products via their names or ids,
+    - find manufacturers/products in the database,
     - create new manufacturers/products
     - update existing manufacturers/products
     - delete manufacturers/products
