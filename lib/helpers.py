@@ -12,8 +12,9 @@ def exit_program():
 
 def list_manufacturers():
     manufacturers = Manufacturer.get_all()
-    for manufacturer in manufacturers:
-        print (manufacturer)
+    for i, manufacturer in enumerate(manufacturers, start=1):
+        print(i, '|', manufacturer.name)
+
 
 def find_manufacturer_by_name():
     name = input("Enter the manufacturer's name: ")
@@ -21,16 +22,16 @@ def find_manufacturer_by_name():
     print(manufacturer) if manufacturer else print(f'{manufacturer} not found')
 
 def find_manufacturer_by_id():
-    mfg_id = input("Enter the manufacturer's id: ")
+    mfg_id = input("Enter the id corresponding to the manufacturer: ")
     manufacturer = Manufacturer.find_by_id(mfg_id)
-    print(manufacturer) if manufacturer else print(f'Manufacturer {mfg_id} not found')
+    print(manufacturer.name, '|', manufacturer.industry) if manufacturer else print(f'Manufacturer {mfg_id} not found')
 
 def create_manufacturer():
     name = input("Enter the manufacturer's name: ")
     industry = input("Enter the manufacturer's industry: ")
     try:
         manufacturer = Manufacturer.create(name, industry)
-        print(f'Success: {manufacturer}')
+        print(f'Success: {manufacturer.name} was created!')
     except Exception as exc:
         print('Error creating manufacturer: ', exc)
 
@@ -44,19 +45,19 @@ def update_manufacturer():
             manufacturer.industry = industry
 
             manufacturer.update()
-            print(f'Success {manufacturer}')
+            print(f'Success {manufacturer.name} was updated!')
         except Exception as exc:
             print("Error updating manufacturer: ", exc)
-        else:
-            print(f'Manufacturer {mfg_id} not found')
-
-def delete_manfacturer():
-    mfg_id = input("Enter the manufacturer's id: ")
-    if manufacturer := Manufacturer.find_by_id(mfg_id):
-        manufacturer.delete()
-        print(f'Manufacturer {mfg_id} deleted')
     else:
         print(f'Manufacturer {mfg_id} not found')
+
+def delete_manfacturer():
+    mfg_id = input("Enter the manufacturer's id that you want to delete: ")
+    if manufacturer := Manufacturer.find_by_id(mfg_id):
+        manufacturer.delete()
+        print(f'Manufacturer {manufacturer.name} deleted')
+    else:
+        print(f'Manufacturer {manufacturer.name} not found')
 
 def list_products():
     products = Product.get_all()
