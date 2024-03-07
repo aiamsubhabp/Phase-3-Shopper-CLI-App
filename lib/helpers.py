@@ -11,31 +11,41 @@ def list_manufacturers():
     for i, manufacturer in enumerate(manufacturers, start=1):
         print(i, manufacturer.name)
 
-def get_mfg_id_from_user(user_choice):
+def get_mfg_obj_from_user(user_choice):
     manufacturers = Manufacturer.get_all()
     if 1 <= user_choice <= len(manufacturers):
-        # print("this is the id", manufacturers[user_choice - 1].id)
-        return manufacturers[user_choice - 1].id
+        return manufacturers[user_choice - 1]
     else:
         return None
     
-def get_product_from_user(user_choice):
-    products = Product.get_all()
-    user_product = products[user_choice-1]
-    if 1 <= user_choice <= len(products):
-        print('Product Name: ', user_product.name)
-        print('Product Type: ', user_product.product_type )
-
-def find_manufacturer_by_name():
-    name = input("Enter the manufacturer's name: ")
-    manufacturer = Manufacturer.find_by_name(name)
-    print(manufacturer) if manufacturer else print(f'{manufacturer} not found')
+def get_product_from_user(user_choice, inner_choice):
     
+    manufacturer = get_mfg_obj_from_user(user_choice)
+    
+    if not manufacturer:
+        raise Exception('Manufacturer not found')
+    
+    products = manufacturer.products()
 
-def find_manufacturer_by_id():
-    mfg_id = input("Enter the id corresponding to the manufacturer: ")
-    manufacturer = Manufacturer.find_by_id(mfg_id)
-    print(manufacturer.name, '|', manufacturer.industry) if manufacturer else print(f'Manufacturer {mfg_id} not found\nPlease enter a valid manufacturer id')
+    if 1 <= inner_choice <= len(products):
+        product = products[inner_choice-1]
+        print('-----------------------------------------------------------------------')
+        print(f'Product Name: {product.name}')
+        print(f'Product Type: {product.product_type}')
+    else:
+        print('Please enter a valid selection')
+
+# UNUSED
+# def find_manufacturer_by_name():
+#     name = input("Enter the manufacturer's name: ")
+#     manufacturer = Manufacturer.find_by_name(name)
+#     print(manufacturer) if manufacturer else print(f'{manufacturer} not found')
+    
+# UNUSED
+# def find_manufacturer_by_id():
+#     mfg_id = input("Enter the id corresponding to the manufacturer: ")
+#     manufacturer = Manufacturer.find_by_id(mfg_id)
+#     print(manufacturer.name, '|', manufacturer.industry) if manufacturer else print(f'Manufacturer {mfg_id} not found\nPlease enter a valid manufacturer id')
     
 
 def create_manufacturer():
@@ -48,10 +58,11 @@ def create_manufacturer():
         print('Error creating manufacturer')
 
 def update_manufacturer():
-    mfg_id = input("Type the number corresponding to the manufacturer you want to update: ")
-    if manufacturer := Manufacturer.find_by_id(mfg_id):
+    user_choice = int(input("Type the number corresponding to the manufacturer you want to update: "))
+    manufacturer = get_mfg_obj_from_user(user_choice)
+    if manufacturer:
         try:
-            name = input("Enter the manufacturers' new name: ")
+            name = input("Enter the manufacturer's new name: ")
             manufacturer.name = name
             industry = input("Enter the manufacturer's new industry (if unchanged, enter in the previous industry): ")
             manufacturer.industry = industry
@@ -61,39 +72,47 @@ def update_manufacturer():
         except Exception:
             print("Error updating manufacturer")
     else:
-        print(f'Manufacturer id {mfg_id} not found')
-        print('Please enter a valid manufacturer id')
+        print(f'Manufacturer not found')
+        print('Please enter a valid number from the options available')
 
 def delete_manfacturer():
-    mfg_id = input("Enter the number corresponding to the manufacturer you want to delete: ")
-    if manufacturer := Manufacturer.find_by_id(mfg_id):
+    user_choice = int(input('Enter the number corresponding to the manufacturer you want to delete: '))
+    manufacturer = get_mfg_obj_from_user(user_choice)
+    if manufacturer:
+        products = manufacturer.products()
+        print(products)
         manufacturer.delete()
+        for product in products:
+            product.delete()
         print(f'Manufacturer {manufacturer.name} deleted')
     else:
-        print(f'Manufacturer id {mfg_id} not found')
-        print("Please enter a valid manufacturer id")
+        print(f'Manufacturer not found')
+        print("Please select number from menu")
 
-def list_products():
-    products = Product.get_all()
-    for product in products:
-        print(product.id, '|', product.name)
+# UNUSED
+# def list_products():
+#     products = Product.get_all()
+#     for product in products:
+#         print(product.id, '|', product.name)
 
-def find_product_by_name():
-    name = input("Enter the product's name: ")
-    product = Product.find_by_name(name)
-    print(product) if product else print(f'{product} not found')
+# UNUSED
+# def find_product_by_name():
+#     name = input("Enter the product's name: ")
+#     product = Product.find_by_name(name)
+#     print(product) if product else print(f'{product} not found')
 
-def find_product_by_id():
-    product_id = input("Enter the product id: ")
-    product = Product.find_by_id(product_id)
-    print('Name:', product.name, '| Type:', product.product_type) if product else print(f'Product id {product_id} not found\nPlease enter a valid product id')
+# UNUSED
+# def find_product_by_id():
+#     product_id = input("Enter the product id: ")
+#     product = Product.find_by_id(product_id)
+#     print('Name:', product.name, '| Type:', product.product_type) if product else print(f'Product id {product_id} not found\nPlease enter a valid product id')
     
 def create_product(user_choice):
     name = input("Enter the products name: ")
     product_type = input("Enter the product type: ")
     try:
-        mfg_id = get_mfg_id_from_user(user_choice)
-        manufacturer = Manufacturer.find_by_id(mfg_id)
+        manufacturer = get_mfg_obj_from_user(user_choice)
+        mfg_id = manufacturer.id
         if not manufacturer:
             raise Exception('Manufacturer not found')
         product = Product.create(name, product_type, mfg_id)
@@ -123,13 +142,13 @@ def update_product():
 
 def delete_product(user_choice):
     try: 
-        mfg_id = get_mfg_id_from_user(user_choice)
-        manufacturer = Manufacturer.find_by_id(mfg_id)
+        manufacturer = get_mfg_obj_from_user(user_choice)
 
         if not manufacturer:
             raise Exception('Manufacturer not found')
         
         products = manufacturer.products()
+       
         
         product_number = int(input('Enter the number corresponding with the product you want to delete: '))
 
@@ -141,11 +160,10 @@ def delete_product(user_choice):
         else:
             print('Invalid product number')
     except Exception:
-        print('Error deleting song')
+        print('Error deleting product')
 
-def list_manufacturer_products(mfg_number):
-    mfg_id = get_mfg_id_from_user(mfg_number)
-    manufacturer = Manufacturer.find_by_id(mfg_id)
+def list_manufacturer_products(user_choice):
+    manufacturer = get_mfg_obj_from_user(user_choice)
     if manufacturer:
         products = manufacturer.products()
         if products:
@@ -159,7 +177,8 @@ def list_manufacturer_products(mfg_number):
         print(f'Manufacturer not found. Please select number from list shown')
         
 
-
+## PREVIOUS WORK ##
+        
 # def list_manufacturer_products():
 #     mfg_id = input("Enter the manufacturer id: ")
 #     manufacturer = Manufacturer.find_by_id(int(mfg_id))
