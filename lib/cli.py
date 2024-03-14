@@ -40,7 +40,7 @@ def start_menu():
 def manufacturer_menu():
     while True:
         print('-----------------------------------------------------------------------')
-        list_manufacturers()
+        manufacturers = list_manufacturers()
         print('-----------------------------------------------------------------------')
         print('Type number of manufacturer for more details')
         print('Type C to create a new manufacturer')
@@ -49,11 +49,12 @@ def manufacturer_menu():
         print('Type B to go back to the main menu')
         print('Type E to exit')
         choice = input("> ").lower()
+        
         if choice == "e":
             exit_program()
         elif choice == 'b':
             manufacturer_menu()
-        elif choice.isdigit():
+        elif choice.isdigit() and 1 <= int(choice) <= len(manufacturers):
             user_choice = int(choice)
             list_manufacturer_products(user_choice)
             print('')

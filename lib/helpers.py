@@ -10,6 +10,7 @@ def list_manufacturers():
     manufacturers = Manufacturer.get_all()
     for i, manufacturer in enumerate(manufacturers, start=1):
         print(i, manufacturer.name)
+    return manufacturers
 
 def get_mfg_obj_from_user(user_choice):
     manufacturers = Manufacturer.get_all()
